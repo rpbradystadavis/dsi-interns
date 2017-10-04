@@ -1,2 +1,2 @@
 # dsi-interns
-# extracting diagnostic tests from reasearch papers
+# extracting diagnostic tests from research papers
