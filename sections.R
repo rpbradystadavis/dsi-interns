@@ -30,9 +30,12 @@ xmls = getxmls(files)
 ## get data from google drive
 library(googlesheets)
 gs_ls()
-sheet <- gs_title("forInterns2.csv")
-data <- gs_read(ss = sheet)
-download_data = as.data.frame(data)
+sheet1 = gs_title("forInterns.csv")
+data1 = gs_read(ss = sheet1)
+sheet2 <- gs_title("forInterns2.csv")
+data2 <- gs_read(ss = sheet2)
+download_data1 = as.data.frame(data1)
+download_data2 = as.data.frame(data2)
 
 make_test_dictionary = function(x)
   # using downloaded data to make a dictionary of diagnostic tests
@@ -47,7 +50,7 @@ make_test_dictionary = function(x)
   return(x)
 }
 tests = make_test_dictionary(download_data$most_specific_diagnostic_Test)
-tests
+sort(unique(tests))
 
 
 library(NLP)
@@ -70,3 +73,30 @@ convertToMatrix = function(x)
 }
 
 mt = convertToMatrix(tests)
+
+testsClean = function(words)
+  # regular way to clean the tests names
+{
+  words = strsplit(words, ",|;|:| and | or |\\)|\\(")
+  words = unlist(words)
+  words = gsub(words, pattern = 'test|tests|assay|microtest',replacement = '')
+  
+  words = gsub(x = words, pattern = '-|\\.', replacement = " ")
+  # words = gsub(x = words, pattern = "$[ .]{1,2}", replacement = "")
+  words = trimws(words, "both")
+  words = words[which(words != "")]
+  words = paste(toupper(substring(words, 1,1)), substring(words, 2), sep = "")
+  words = unique(words)
+  words = sort(words)
+}
+
+testsDictionary = testsClean(download_data1$most_specific_diagnostic_Test)
+testsDictionary2 = testsClean(download_data2$most_specific_diagnostic_Test)
+
+library(SnowballC)
+library(lsa)
+mt1 = convertToMatrix(testsDictionary)
+mt2 = convertToMatrix(testsDictionary2)
+lsa:: cosine(mt1[1,],mt1[2,])
+testsDictionary[1]
+testsDictionary[2]
