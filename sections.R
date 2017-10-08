@@ -1,6 +1,9 @@
 # author: yunzhe li
 # date: Sep. 18
 
+library(ReadPDF)
+library(XML)
+
 getfiles = function(x)
   # get rid of duplicate files
 {
@@ -85,7 +88,9 @@ testsClean = function(words)
   # words = gsub(x = words, pattern = "$[ .]{1,2}", replacement = "")
   words = trimws(words, "both")
   words = words[which(words != "")]
-  words = paste(toupper(substring(words, 1,1)), substring(words, 2), sep = "")
+  words = tolower(words)
+  # set the first letter as upper case
+  # words = paste(toupper(substring(words, 1,1)), substring(words, 2), sep = "")
   words = unique(words)
   words = sort(words)
 }
@@ -93,6 +98,8 @@ testsClean = function(words)
 testsDictionary = testsClean(download_data1$most_specific_diagnostic_Test)
 testsDictionary2 = testsClean(download_data2$most_specific_diagnostic_Test)
 
+
+# cosine similarity
 library(SnowballC)
 library(lsa)
 mt1 = convertToMatrix(testsDictionary)
@@ -100,3 +107,21 @@ mt2 = convertToMatrix(testsDictionary2)
 lsa:: cosine(mt1[1,],mt1[2,])
 testsDictionary[1]
 testsDictionary[2]
+
+
+# extract the wrods from the section study and design
+header = ReadPDF::findSectionHeaders(xmls[[1]])
+header = ReadPDF::nodesByLine(header)
+doc = header$`3. Study design`
+texts = sapply(doc, ReadPDF::getDocText)
+test = texts[1]
+test
+someCorpus = Corpus(VectorSource(test))
+tdm = TermDocumentMatrix(someCorpus, control = list(tokenize = AlphabeticTokenizer,
+                                                  removePunctuation = TRUE,
+                                                  removeNumbers = TRUE,
+                                                  wordLengths = c(1, Inf)))
+thedf = as.data.frame(as.matrix(tdm))
+paperwords = rownames(thedf)
+testsDictionary
+View(thedf)
