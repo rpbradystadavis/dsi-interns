@@ -6,6 +6,8 @@ library(XML)
 
 getfiles = function(x)
   # get rid of duplicate files
+  # input: path of directory containing all pdf files
+  # output: name of files without duplication
 {
   setwd("/home")
   setwd(x)
@@ -16,33 +18,24 @@ getfiles = function(x)
   files = raw_files[-index]
   return(files)
 }
-files = getfiles("/home/yunzheli/DSI-ReadPDF/subsetPapers2/pdf/")
 
 getxmls = function(x)
   # get all legitiment xmls
+  # input: file names]
+  # output: xml documents
 {
   xmls = lapply(x, function(x) try(convertPDF2XML(x)))
+  result = cbind(xmls, files)
   scannedPDF = lapply(xmls, function(x) try(isScanned(x)))
   useful_index = which(scannedPDF == FALSE)
-  xmls = xmls[useful_index]
-  return(xmls)
+  result = result[useful_index,]
+  return(result)
 }
-xmls = getxmls(files)
 
-## get data from google drive
-## could also download the .csv files manually
-library(googlesheets)
-gs_ls()
-sheet1 = gs_title("forInterns.csv")
-data1 = gs_read(ss = sheet1)
-sheet2 <- gs_title("forInterns2.csv")
-data2 <- gs_read(ss = sheet2)
-download_data1 = as.data.frame(data1)
-download_data2 = as.data.frame(data2)
-# one as training set, another as testing set.
 
 
 # method 1: use text mining methods to clean the dictionary first.
+# Note: it has not been working well so far. Ryan has a better implementation
 make_test_dictionary = function(x)
   # using downloaded data to make a dictionary of diagnostic tests
 {
@@ -55,8 +48,6 @@ make_test_dictionary = function(x)
   # x = tolower(x)
   return(x)
 }
-tests = make_test_dictionary(download_data1$most_specific_diagnostic_Test)
-# sort(unique(tests))
 
 
 library(NLP)
@@ -78,13 +69,17 @@ convertToMatrix = function(x)
   return(df)
 }
 
-mt = convertToMatrix(tests)
+# mt = convertToMatrix(tests)
 
 
 # Method 2: Simply use the dictionary from the file,
 # Apply it to the text, get rid of the unused ones 
 testsClean = function(words)
   # regular way to clean the tests names
+  # 
+  # input: a vector/list of tests's name (raw file)
+  # output: get rid of all whitespace which have no meaning: in the front of at the end
+  #         and reduce all duplicates 
 {
   words = strsplit(words, ",|;|:| and | or |\\)|\\(")
   words = unlist(words)
@@ -100,20 +95,6 @@ testsClean = function(words)
   words = unique(words)
   words = sort(words)
 }
-
-testsDictionary = testsClean(download_data1$most_specific_diagnostic_Test)
-testsDictionary2 = testsClean(download_data2$most_specific_diagnostic_Test)
-
-
-# cosine similarity
-library(SnowballC)
-library(lsa)
-mt1 = convertToMatrix(testsDictionary)
-mt2 = convertToMatrix(testsDictionary2)
-lsa:: cosine(mt1[1,],mt1[2,])
-testsDictionary[1]
-testsDictionary[2]
-
 
 
 
