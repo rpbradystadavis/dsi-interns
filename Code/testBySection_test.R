@@ -32,9 +32,9 @@
 
 
 
-RyansDictionary = read.csv("../../dsi-interns/testdictionary.csv", stringsAsFactors = FALSE, fill = TRUE)
+RyansDictionary = read.csv("../../dsi-interns/Files/testdictionary.csv", stringsAsFactors = FALSE, fill = TRUE)
 RyansDictionary = RyansDictionary$x
-
+findTestInSection("Andriamandimby-2011-Crimean-Congo hemorrhagic.pdf", RyansDictionary)
 
 # test the functions with different dictionaries
 locate_section(xmls[[13]], RyansDictionary) # "antibodies" "ELISA"      "isolation" 
@@ -50,8 +50,29 @@ download_data2$PDF[grep(files[3], download_data2)]
 
 
 # findSectionHeaders is very computationally expensive
-# headers = sapply(xmls, findSectionHeaders)
+headers = sapply(files, findSectionHeaders)
 sectionFiles = giveMeSectionFile(headers)
 # write it to a text file for next time use
 # This file contains all files which has section of study or methods
-write(sectionFiles, "sectionFiles.txt")
+write(sectionFiles, "sectionFiles.csv")
+
+
+
+read.table("../../dsi-interns/Files/sectionFiles.txt")
+
+
+setwd("../../subsetPapers2/pdf/")
+library(ReadPDF)
+library(XML)
+my_tests = sapply(files, function(x) try(findTestInSection(x, RyansDictionary)))
+myTests = lapply(my_tests, function(x) paste(x, collapse = ","))
+myTests = sapply(myTests, unlist)
+Files = sapply(files, unlist)
+forIntern = sapply(Files, function(x) grep(x, download_data2$PDF))
+forInternTests = sapply(forIntern, function(x) download_data2$most_specific_diagnostic_Test[x])
+forInternTests_new = sapply(forInternTests, unique)
+forInternTests = sapply(forInternTests_new, function(x) paste(x, collapse = ","))
+myFile = as.data.frame(cbind(Files, myTests, forInternTests))
+write.csv(myFile, "../../dsi-interns/Files/myTests.csv")
+
+                            

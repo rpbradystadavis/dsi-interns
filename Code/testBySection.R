@@ -10,8 +10,8 @@ testfinder = function(text,dictionary){
   
   fixtext1 = paste(dictionary,'\\b',sep ='')
   fixtext2 = paste('(?i)\\b',fixtext1,sep='')
-  indices = sapply(fixtext2,grepl,text)
-  result = dictionary[indices]
+  indices = which(sapply(fixtext2,grepl,text))
+  result = dictionary[unique(indices)]
   return(result)
   
   
@@ -19,6 +19,8 @@ testfinder = function(text,dictionary){
 
 
 # still not work properly for the paper which don't have such sections
+# computational expensive, because of using findSectionHeader() and getSectionText()
+# in the same function
 locate_section = function(xml, dictionary) 
   # only look for section of "study design" or "methods and materials"
   # input : one xml tree
@@ -44,6 +46,21 @@ locate_section = function(xml, dictionary)
   }
 }
 
+findTestInSection = function(file, dictionary)
+{
+  wholeText = getSectionText(file)
+  key = grep("study|method|design", names(wholeText), ignore.case = TRUE, value = FALSE)
+  if(length(key) != 0)
+  {  
+    section_text = unlist(wholeText[key], recursive = TRUE, use.names = FALSE)
+    sectionText = paste(section_text, sep ='', collapse = '') 
+    tests = testfinder(sectionText, dictionary)
+    tests = unique(tests)
+    return(tests)
+  }else{
+    return("I dont know")
+  }
+}
 
 giveMeIndex = function(header)
 {
