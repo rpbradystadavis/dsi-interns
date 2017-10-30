@@ -1,0 +1,15 @@
+I ran the function findTestInSection() in testBySection.R. and wrote the
+ouput to a myTests.csv file (uploaded to google drive).
+```
+my_tests = sapply(files, function(x) try(findTestInSection(x, RyansDictionary)))
+```
+
+Currently, the function only works on the pdf which contains the section
+of Method, study design or material and methods.
+
+Observations:
+We got many antibodies but it does not appear in the forintern2.csv file.
+
+In PDF Andriamandimby-2011-Crimean-Congo hemorrhagic.pdf
+We found ELISA, IGG ELISA, bu there is only virus isolation in forIntern2.csv.
+We don't find virus isolation in the paper.
