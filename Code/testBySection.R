@@ -10,11 +10,9 @@ testfinder = function(text,dictionary){
   
   fixtext1 = paste(dictionary,'\\b',sep ='')
   fixtext2 = paste('(?i)\\b',fixtext1,sep='')
-  indices = which(sapply(fixtext2,grepl,text))
+  indices = which(sapply(tolower(fixtext2),grepl,tolower(text)))
   result = dictionary[unique(indices)]
   return(result)
-  
-  
 }
 
 
@@ -45,15 +43,21 @@ locate_section = function(xml, dictionary)
     print("else")
   }
 }
-
+  
 findTestInSection = function(file, dictionary)
+# input: file name and dictionary file
+# output: get all tests names in the section of method or study
 {
+  
   wholeText = getSectionText(file)
-  key = grep("study|method|design", names(wholeText), ignore.case = TRUE, value = FALSE)
+  sectionNames = names(wholeText)
+  sectionNames = gsub("\\s", "", sectionNames)
+  key = grep("study|method|design", sectionNames, ignore.case = TRUE, value = FALSE)
   if(length(key) != 0)
   {  
     section_text = unlist(wholeText[key], recursive = TRUE, use.names = FALSE)
-    sectionText = paste(section_text, sep ='', collapse = '') 
+    sectionText = paste(section_text, sep ='', collapse = '')
+    sectionText = gsub("Â", " ", sectionText)
     tests = testfinder(sectionText, dictionary)
     tests = unique(tests)
     return(tests)
@@ -61,6 +65,7 @@ findTestInSection = function(file, dictionary)
     return("I dont know")
   }
 }
+
 
 giveMeIndex = function(header)
 {

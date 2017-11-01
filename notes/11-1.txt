@@ -1,6 +1,6 @@
 Chevalier-2010-Environmental risk factors of W.pdf
 
-section names "METHOLOGY" is seperated by some whitespaces
+1.(solved) section names "METHOLOGY" is seperated by some whitespaces
 ```
 file = "Chevalier-2010-Environmental risk factors of W.pdf"
 wholeText = getSectionText(file)
@@ -10,7 +10,12 @@ output:
 "METH ODO L OGY" 
 
 possible solution:
-gsub() function to ignore all whitespace.
+gsub() function to ignore all whitespace. 
+
+
+2. we don't get seroneutralization
+reason: word appears in summary section not methodology
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -38,3 +43,19 @@ the reason why missed it is that it showed up with full name
 
 Possible solution: Put full names in our dictionary.
 
+After put immunoglobulin M–specific and immunoglobulin M
+we still could not get it because "-" shows up as a weird pattern.
+//
+Possible solution:
+use str_ extract() instead of grep().
+
+Method is not good, because it conflict with previous method, for HI
+FA, we want to set word boundary but in this case we broke the rule.
+//
+possible solutoin:
+remove all strange characters
+
+final solution
+```
+sectionText = gsub("Â", " ", sectionText)
+```
