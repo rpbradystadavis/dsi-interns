@@ -1,0 +1,40 @@
+Chevalier-2010-Environmental risk factors of W.pdf
+
+section names "METHOLOGY" is seperated by some whitespaces
+```
+file = "Chevalier-2010-Environmental risk factors of W.pdf"
+wholeText = getSectionText(file)
+names(wholeText)
+```
+output:
+"METH ODO L OGY" 
+
+possible solution:
+gsub() function to ignore all whitespace.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Bourhy-2005-Phylogenetic relationships among r.pdf
+
+our output:
+PCR,RT-PCR,sequencing
+those are in the section "METHOD"
+But in forintern2.csv file it shows "IgG ELISA"
+We could not find the word "ELISA" or "enzym" in the paper.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Breed-2010-Prevalence of henipavirus and rubul.pdf
+
+our output:
+antibodies,ELISA,virus neutralization test,VNT,western blot
+
+forintern:
+IgG ELISA,ELISA and VNT,Serology
+
+We don't find igG ELISA in the paper. But we found igM elisa,
+the reason why missed it is that it showed up with full name
+"immunoglobulin M".
+
+Possible solution: Put full names in our dictionary.
+
