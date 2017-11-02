@@ -85,29 +85,9 @@ myTests2 = sapply(myTests2, unlist)
 
 Files
 setwd("../../subsetPapers2/pdf/")
-t=13
+t=8
 findTestInSection(Files[t], JacksDictionary)
+findTestInSection(Files[t], RyansDictionary)
 forInternTests[t]
 Files[t]
-findTestInSection = function(file, dictionary)
-  # input: file name and dictionary file
-  # output: get all tests names in the section of method or study
-{
-  file = Files[8]
-  dictionary = JacksDictionary
-  wholeText = getSectionText(file)
-  sectionNames = names(wholeText)
-  sectionNames = gsub("\\s", "", sectionNames)
-  key = grep("study|method|design", sectionNames, ignore.case = TRUE, value = FALSE)
-  if(length(key) != 0)
-  {  
-    section_text = unlist(wholeText[key], recursive = TRUE, use.names = FALSE)
-    sectionText = paste(section_text, sep ='', collapse = '')
-    sectionText = gsub("Â", " ", sectionText)
-    tests = testfinder(sectionText, dictionary)
-    tests = unique(tests)
-    return(tests)
-  }else{
-    return("I dont know")
-  }
-}
+

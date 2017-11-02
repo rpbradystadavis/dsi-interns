@@ -31,6 +31,30 @@ In the original .pdf file, "2. Materials and Methods" has bold and bigger font. 
 Possible solution:
 1. modify getSectionText() to notice the main section names and subsection names.
 2. we can write a function to group them together in our function, by the firts number.
+//
+
+
+Fixed function:
+new output:
+que reduction neutralization" "PRNT" 
+
+forintern2.csv:
+ "PRNT"
+
+Warning message:
+Warning messages:
+1: In if (grepl("[:digits:]{1,1}.[:alpha:]{1,1}", sectionNames[key])) { :
+  the condition has length > 1 and only the first element will be used
+2: In grep(pattern, sectionNames) :
+  argument 'pattern' has length > 1 and only the first element will be used
+
+Fixed:
+adding
+```
+  key = grep("study|method|design", sectionNames, ignore.case = TRUE, value = FALSE)
+  new_key = key[grepl("[:digits:]{1,1}.[:alpha:]{1,1}", sectionNames[key])]
+```
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Corman.pdf
@@ -61,3 +85,61 @@ Terminator v1.1 Cycle Sequencing kit (Applied Biosystems)."
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Forrester-2008-Western equine encephalitis sub.pdf"
+out output:
+"isolation"
+
+forintern2.csv:
+"virus isolation, PCR"
+we dont find "PCR" or "polymerase chain reaction" in the paper.
+
+possible reason, it might be summary of some other tests.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Gulati-2011-Serosurveillance for Japanese ence.pdf"
+our output:
+[1] "hemagglutination"            "hemagglutination inhibition" "HI"   [4] "virus neutralization"        "VNT" 
+
+forintern2.csv:
+"HI, NT"
+
+we found "Virus neutralization tes (VNT)" in the paper.
+so we guess "NT" might be as same as "VNT"
+
+Cout be better:
+we could group the same test at the end of the function to get rid of the repeating ones.
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Halpin-2000-Isolation of Hendra virus from pte.pdf"
+
+our output:
+"electron microscopy" "ELISA" "IFA" "isolation" "PCR" "sequencing"     "serology" "virus isolation" "virus neutralization"
+
+forintern2.csv
+"IgG ELISA"
+
+Our function gets all tests that shows in the section "METHODS"
+They only want IgG ELISA. We could find "ELISA" but not "IgG ELISA" in the paper.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Hara-2005-Isolation and characterization of a.pdf"
+
+Our function returns nothing. 
+It has the same issue with the paper "Burgueno-2013-Seroprevalence of St. Louis enc2.pdf"
+
+subsection name and setion name.
+
+After modifying function:
+adding
+```
+  if(grepl("[:digits:]{1,1}.[:alpha:]{1,1}", sectionNames[key]))
+  {
+    pattern = sprintf("^(%d.)", key)
+    key = grep(pattern, sectionNames)
+  }
+```
+
+new output:
+isolation"        "PCR"              "sequencing"       "virus isolation"  "western blotting"
+
