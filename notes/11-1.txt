@@ -24,7 +24,7 @@ Bourhy-2005-Phylogenetic relationships among r.pdf
 our output:
 PCR,RT-PCR,sequencing
 those are in the section "METHOD"
-But in forintern2.csv file it shows "IgG ELISA"
+"IgG ELISA" is missing.
 We could not find the word "ELISA" or "enzym" in the paper.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,3 +59,25 @@ final solution
 ```
 sectionText = gsub("Â", " ", sectionText)
 ```
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Buckley-2003-Serological evidence of West Nile.pdf
+
+our output:
+"nested pcr"   "PCR"          "PRNT"         "RT-PCR"       "sequencing"   "western blot"
+
+forintern2.csv:
+PRNT,Serology, Isolation
+
+In the METHODS section, we get all subtitle words correctly except missing IF test. 
+There is "Virus strains" in methods section and we are not sure if
+that means "Virus Isolation".
+
+Reason: in the paper it shows up as "immunofluorescence (IF) tests"
+But we have immunofluorescence tests in dictionary. (we can add it into
+our dictionary)
+
+But we still do not know why they wrote down Serology,
+
+
+
