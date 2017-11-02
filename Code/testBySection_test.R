@@ -85,7 +85,7 @@ myTests2 = sapply(myTests2, unlist)
 
 Files
 setwd("../../subsetPapers2/pdf/")
-t=7
+t=13
 findTestInSection(Files[t], JacksDictionary)
 forInternTests[t]
 Files[t]
@@ -93,7 +93,7 @@ findTestInSection = function(file, dictionary)
   # input: file name and dictionary file
   # output: get all tests names in the section of method or study
 {
-  file = Files[7]
+  file = Files[8]
   dictionary = JacksDictionary
   wholeText = getSectionText(file)
   sectionNames = names(wholeText)

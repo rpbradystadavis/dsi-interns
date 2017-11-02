@@ -38,7 +38,7 @@ forintern:
 IgG ELISA,ELISA and VNT,Serology
 
 We don't find igG ELISA in the paper. But we found igM elisa,
-the reason why missed it is that it showed up with full name
+the reason why we missed "igM ELISA" is that it showed up with full name
 "immunoglobulin M".
 
 Possible solution: Put full names in our dictionary.
