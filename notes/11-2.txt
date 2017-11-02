@@ -1,0 +1,63 @@
+Burgueno-2013-Seroprevalence of St. Louis enc2.pdf
+
+Problem: we do not get anything
+Reason: subsection names are list with mainsection names.
+
+```
+wholeText = getSectionText(file)
+sectionNames = names(wholeText)
+sectionNames = gsub("\\s", "", sectionNames)
+```
+
+output:
+[1] "1.Introduction"                               "2.MaterialsandMethods"                       
+[3] "2.1.StudySites."                              "2.2.SampleCollection."                       
+[5] "2.3.PlaqueReductionNeutralizationTest(PRNT)." "3.Results"                                   
+[7] "4.Discussion"                                 "5.Conclusions"    
+
+```
+key = grep("study|method|design", sectionNames, ignore.case = TRUE, value = FALSE)
+```
+
+output: 2,3
+
+but the test is in [5] which technically belongs to section 2.
+
+
+Observation:
+In the original .pdf file, "2. Materials and Methods" has bold and bigger font. "2.1 Study Sites" has same font with body paragraph but has italic format.
+
+
+Possible solution:
+1. modify getSectionText() to notice the main section names and subsection names.
+2. we can write a function to group them together in our function, by the firts number.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Corman.pdf
+our output:
+"ELISA"     "isolation"
+
+forintern2.csv
+"ELISA"
+
+Reason: Original contents
+"Serum samples from 28 dromedary camels from Wajir
+County that had been held at a research center in isolation
+conditions since 1998 were negative for MERV-CoV anti-
+bodies."
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Cornelissen-Kei-2012-Discovery of a novel Torq.pdf"
+our output:
+"PCR"        "sequencing"
+forintern2.csv:
+"PCR"
+
+Reason: Oringinal contents
+"Restriction fragments of approximately 2.9 kb were purified
+from the gel and inserted into the BamHI or EcoRI sites of vector
+pSC-A-amp/kan (Agilent). Inserts were sequenced using the Big Dye
+Terminator v1.1 Cycle Sequencing kit (Applied Biosystems)."
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
