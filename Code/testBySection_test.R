@@ -83,12 +83,11 @@ findTestInSection = function(file, dictionary)
   # input: file name and dictionary file
   # output: get all tests names in the section of method or study
 {
-  file = Files[45]
-  dictionary = JacksDictionary
+  # file = Files[1]
+  # dictionary = JacksDictionary
   wholeText = getSectionText(file)
   sectionNames = names(wholeText)
   sectionNames = gsub("\\s", "", sectionNames)
-  
   key = grep("study|method|design", sectionNames, ignore.case = TRUE, value = FALSE)
   new_key = key[grepl("[:digits:]{1,1}.[:alpha:]{1,1}", sectionNames[key])]
   if(length(new_key) != 0)
@@ -100,12 +99,16 @@ findTestInSection = function(file, dictionary)
     }
   }
   
-  
-  
+
   if(length(key) != 0)
   {  
     section_text = unlist(wholeText[key], recursive = TRUE, use.names = FALSE)
-    sectionText = paste(section_text, sep ='', collapse = '')
+    if(any(section_text == " "))
+    {
+      sectionText = paste(section_text, sep ='', collapse = '')
+    }else{
+      sectionText = paste(section_text, sep = '', collapse = ' ')
+    }
     sectionText = gsub("Â", " ", sectionText)
     tests = testfinder(sectionText, dictionary)
     tests = unique(tests)
@@ -114,12 +117,13 @@ findTestInSection = function(file, dictionary)
     return("I dont know")
   }
 }
+
 Files
 setwd("../../subsetPapers2/pdf/")
-t=45
+t=27
 Files[t]
 findTestInSection(Files[t], JacksDictionary)
-findTestInSection(Files[t], RyansDictionary)
+findTestsInWholeText(Files[t], JacksDictionary)
 forInternTests[t]
 
 lapply(Files[1:20], function(x) try(findTestInSection(x, JacksDictionary)))
