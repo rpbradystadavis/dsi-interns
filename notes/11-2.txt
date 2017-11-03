@@ -143,3 +143,21 @@ adding
 new output:
 isolation"        "PCR"              "sequencing"       "virus isolation"  "western blotting"
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Nelson-2010-Confirmation of Choclo Virus as th.pdf"
+
+our function gets nothing.
+
+Reason: 
+```
+  wholeText = getSectionText("Nelson-2010-Confirmation of Choclo Virus as th.pdf")
+  sectionNames = names(wholeText)
+  sectionNames = gsub("\\s", "", sectionNames)
+```
+output:
+[1] "INTRODUCTION"    "METHODS"         "RT-PCR"          "RESULTS"         "DISCUSSION"     
+[6] "ACKNOWLEDGMENTS" "REFERENCES"     
+
+the problem here is RT-PCR is a subsection under METHOD, however I guess, since it has all capital letters, the getSectionText() treat it as a section name.
+

@@ -78,16 +78,49 @@ write.csv(myFile, "../../dsi-interns/Files/myTests.csv")
 
 JacksDictionary = read.csv("../../dsi-interns/Files/testdictionary (modified).csv", stringsAsFactors = FALSE)[[1]]
 # computation is too expensive
-my_tests2 = sapply(Files, function(x) try(findTestInSection(x, JacksDictionary)))
-myTests2 = lapply(my_tests2, function(x) paste(x, collapse = ","))
-myTests2 = sapply(myTests2, unlist)
 
-
+findTestInSection = function(file, dictionary)
+  # input: file name and dictionary file
+  # output: get all tests names in the section of method or study
+{
+  file = Files[45]
+  dictionary = JacksDictionary
+  wholeText = getSectionText(file)
+  sectionNames = names(wholeText)
+  sectionNames = gsub("\\s", "", sectionNames)
+  
+  key = grep("study|method|design", sectionNames, ignore.case = TRUE, value = FALSE)
+  new_key = key[grepl("[:digits:]{1,1}.[:alpha:]{1,1}", sectionNames[key])]
+  if(length(new_key) != 0)
+  {
+    if(grepl("[:digits:]{1,1}.[:alpha:]{1,1}", sectionNames[new_key]))
+    {    
+      pattern = sprintf("^(%d.)", new_key)
+      key = grep(pattern, sectionNames)
+    }
+  }
+  
+  
+  
+  if(length(key) != 0)
+  {  
+    section_text = unlist(wholeText[key], recursive = TRUE, use.names = FALSE)
+    sectionText = paste(section_text, sep ='', collapse = '')
+    sectionText = gsub("Â", " ", sectionText)
+    tests = testfinder(sectionText, dictionary)
+    tests = unique(tests)
+    return(tests)
+  }else{
+    return("I dont know")
+  }
+}
 Files
 setwd("../../subsetPapers2/pdf/")
-t=8
+t=45
+Files[t]
 findTestInSection(Files[t], JacksDictionary)
 findTestInSection(Files[t], RyansDictionary)
 forInternTests[t]
-Files[t]
+
+lapply(Files[1:20], function(x) try(findTestInSection(x, JacksDictionary)))
 
