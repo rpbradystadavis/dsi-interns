@@ -1,0 +1,26 @@
+For some papers, the getSectionText() function get word by word with white space seperated.
+As: [1] "Background"                               "Crimean-Congo"                           
+  [3] " "                                        "hemorrhagic"      
+
+But some with sentence by setence
+As: [2] "Collection of samples from birds." 
+
+So it is hard for to decide how do we paste them together.
+
+possible solution:
+Check if " " shows up as a element then we paste without collapse.
+
+
+(solved)
+```  
+    if(any(section_text == " "))
+    {
+      sectionText = paste(section_text, sep ='', collapse = '')
+    }else{
+      sectionText = paste(section_text, sep = '', collapse = ' ')
+    }
+```
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
