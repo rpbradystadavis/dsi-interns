@@ -19,4 +19,4 @@ By getting into the function, the problem is caused by
 secs = secs[as.numeric(sapply(secs, xmlGetAttr, "rotation")) == 
                     0]
 
-
+returns a list of NULL's

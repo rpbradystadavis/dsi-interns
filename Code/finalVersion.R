@@ -42,6 +42,7 @@ getKey = function(sectionNames)
 
 
 findTestInSectionName = function(sectionNames, dictionary)
+  # get tests in section names
 {
   if(length(sectionNames != 0))
   {
@@ -53,6 +54,9 @@ findTestInSectionName = function(sectionNames, dictionary)
 
 findTestsInWholeText = function(wholeText, dictionary)
 {
+  # deal with two different inputs
+  # 1. word by word with whitespace spereated.
+  # 2. sentence by sentence without whitespace sperated
   if(any(wholeText == " "))
   {
     wholeText = paste(wholeText, sep ='', collapse = '')
@@ -71,6 +75,10 @@ findTestInSection = function(key, wholeText, sectionNames, dictionary)
 {
    
     section_text = unlist(wholeText[key], recursive = TRUE, use.names = FALSE)
+    
+    # deal with two different inputs
+    # 1. word by word with whitespace spereated.
+    # 2. sentence by sentence without whitespace sperated
     if(any(section_text == " "))
     {
       sectionText = paste(section_text, sep ='', collapse = '')
@@ -114,6 +122,4 @@ findTests = function(file, dictionary)
     tests = unique(c(testsInSectionName, testsInWholeText))
     return(tests)
   }
-  
-  
 }
