@@ -2,4 +2,21 @@ finalize the functions.
 
 I tried to write the big function to many unit functions.
 
+I got a strange error
+
+```
+getSectionText("Andriamandimby-2011-Crimean-Congo hemorrhagic.pdf")
+```
+output:
+Error in findSectionHeaders(doc, ...) : 
+  (list) object cannot be coerced to type 'double'
+
+
+Function was working fine before. The error just pop up.
+I tried to reinstall packages "XML" and "ReadPDF", it did not work.
+
+By getting into the function, the problem is caused by
+secs = secs[as.numeric(sapply(secs, xmlGetAttr, "rotation")) == 
+                    0]
+
 
