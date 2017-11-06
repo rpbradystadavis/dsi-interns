@@ -1,0 +1,4 @@
+Error in system(cmd, intern = TRUE) : 
+  cannot popen 'pdftohtml -q -xml -stdout '120.full.pdf'', probable reason 'Cannot allocate memory'
+
+

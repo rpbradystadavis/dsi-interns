@@ -1,0 +1,5 @@
+finalize the functions.
+
+I tried to write the big function to many unit functions.
+
+

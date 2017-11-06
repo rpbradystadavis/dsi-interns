@@ -120,11 +120,17 @@ findTestInSection = function(file, dictionary)
 
 Files
 setwd("../../subsetPapers2/pdf/")
-t=27
+t=2
 Files[t]
 findTestInSection(Files[t], JacksDictionary)
 findTestsInWholeText(Files[t], JacksDictionary)
 forInternTests[t]
 
-lapply(Files[1:20], function(x) try(findTestInSection(x, JacksDictionary)))
 
+
+TestInSection = sapply(Files[1:10], function(x) try(findTestInSection(x, JacksDictionary)))
+names(TestInSection) = NULL
+TestInWholeText = sapply(Files[1:10], function(x) try(findTestsInWholeText(x, JacksDictionary)))
+names(TestInWholeText) = NULL
+TestInSectionName = sapply(Files[1:10], function(x) try(findTestInSectionName(x, JacksDictionary)))
+names(TestInSectionName) = NULL
