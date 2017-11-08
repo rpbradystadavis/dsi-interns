@@ -1,5 +1,43 @@
+# required packages
 library(XML)
 library(ReadPDF)
+
+# findTestsInWholeText(wholeText,dictionary)
+# findTestInSection(key,wholeText,sectionNames,dictionary)
+# findTestInSectionName(sectionNames,dictionary)
+# getKey(sectionNames)
+# testfinder(text,dictionary)
+
+# main function
+findTests = function(file, dictionary)
+  # find all tests in the pdf.
+{
+  # extract all text grouped by section names.
+  wholeText = getSectionText(file)
+  
+  sectionNames = names(wholeText)
+  
+  # get tests in section names
+  testsInSectionName = findTestInSectionName(sectionNames, dictionary)
+  
+  # git rid of whitespace
+  # example: make "METH ODO L OGY" to "METHODOLOGY"
+  sectionNames = gsub("\\s", "", sectionNames)
+  
+  # get indices of key sections
+  key = getKey(sectionNames)
+  
+  if(length(key) != 0)
+  { 
+    testsInSection = findTestInSection(key, wholeText, sectionNames, dictionary)
+    tests = unique(c(testsInSectionName, testsInSection))
+    return(tests)
+  }else{
+    testsInWholeText = findTestsInWholeText(wholeText, dictionary)
+    tests = unique(c(testsInSectionName, testsInWholeText))
+    return(tests)
+  }
+}
 
 testfinder = function(text,dictionary){
   #searches text for tests
@@ -23,7 +61,7 @@ getKey = function(sectionNames)
   # 2.3.PlaqueReductionNeutralizationTest(PRNT).
   # 2.1 to 2.3 are under section Materials and Methods but shows as new sections
   # we check the pattern digit followd by dot, dot followed by letter
-  new_key = key[grepl("^[:digit:].[:alpha:]{1,1}", sectionNames[key])]
+  new_key = key[grepl("^\\d.\\D", sectionNames[key])]
   
   if(length(new_key) != 0)
   {
@@ -94,32 +132,3 @@ findTestInSection = function(key, wholeText, sectionNames, dictionary)
 }
 
 
-findTests = function(file, dictionary)
-  # find all tests in the pdf.
-{
-  # extract all text grouped by section names.
-  wholeText = getSectionText(file)
-  
-  sectionNames = names(wholeText)
-  
-  # git rid of whitespace
-  # example: make "METH ODO L OGY" to "METHODOLOGY"
-  sectionNames = gsub("\\s", "", sectionNames)
-  
-  # get tests in section names
-  testsInSectionName = findTestInSectionName(sectionNames, dictionary)
-  
-  # get indices of key sections
-  key = getKey(sectionNames)
-  
-  if(length(key) != 0)
-  { 
-    testsInsection = findTestInSection(key, wholeText, sectionNames, dictionary)
-    tests = unique(c(testsInSectionName, testsInSection))
-    return(tests)
-  }else{
-    testsInWholeText = findTestsInWholeText(wholeText, dictionary)
-    tests = unique(c(testsInSectionName, testsInWholeText))
-    return(tests)
-  }
-}

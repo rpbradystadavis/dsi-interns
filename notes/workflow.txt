@@ -1,0 +1,46 @@
+Description of the functions:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+findTests(file, dictionary)
+Main function
+input: pdf file, vector of tests name.
+output: zoonotics diagnoal tests.
+
+tests dictionary is based on the forintern2.csv file. There are some misspelling words and different forms of the same tests. We manually correct and add them to a .csv file called dictionary. The reason for us to do it is forintern.csv we use is manually inputed, so it is reasonable to have mistakes there, and manually change it to the correct way is also acceptable.
+
+In this function, we use getSectionText() to obtain the text form. Then we are looking at three different places. SectionNames, Text under Material and Method, Study Design sections, and the last one is
+to search globally.
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+getKey(sectionNames)
+This function is to find the indices of all sections meet our requirement, containing words "Method", "Design", or "Study". This function can handle the situation of subsections have the same level with the sections. For example (file Burgueno-2013-Seroprevalence of St. Louis enc2.pdf)
+:
+[1] "1.Introduction"                               "2.MaterialsandMethods"       
+[3] "2.1.StudySites."                              "2.2.SampleCollection."       
+[5] "2.3.PlaqueReductionNeutralizationTest(PRNT)." "3.Results"                   
+[7] "4.Discussion"                                 "5.Conclusions"
+
+our function will search through 2. to 2.3
+
+We cannot solve the problem when there is no index before secton name, for example (file "Nelson-2010-Confirmation of Choclo Virus as th.pdf"):
+[1] "INTRODUCTION"    "METHODS"         "RT-PCR"          "RESULTS"         "DISCUSSION"
+[6] "ACKNOWLEDGMENTS" "REFERENCES"
+
+our function will not search text under "RT-PCR". However it is a subsection under "METHODS".
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+findTestInSectionName(sectionNames,dictionary)
+This function treat sectionNames as a string and search the tests in the string. We found there are some tests appearing in the sectionNames.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+findTestInSection(key,wholeText,sectionNames,dictionary)
+Note key is from getKey()
+This functions runs only if key is found.
+
+otherwise
+findTestInWholeText(wholeText, dictionary) will run.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We realize that if the pdf contains the section Method or Study or similar words, then we have high probability to find interested tests names. For some paper, tests names are actually in the section names.
+Our function can handle those two situations very well.
+However, there are many false-positives. We can tell their interests are mostly in the area we mentioned above, but we could not figure out how and why they sometimes only choose some test names.
