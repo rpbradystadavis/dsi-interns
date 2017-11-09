@@ -1,0 +1,232 @@
+####Work flow
+
+Function Test Finder
+	For Test finder I constructed a function that will search the text for dictionary 
+	matches. I then implemented this function into the broader function, getSection Text
+	 which looks in specific section of the XML documents and applies testfinder.
+	 
+Function getcorrecttext:
+	step 1. Applies sectionNames to divide section text.
+	
+	step 2. Looks to see if any tests are in the section header. This is definitely the 
+	most unfinished part of the code. 
+	
+	step 3. Certain patterns emerge in section names where tests commonly exists. This
+	part of the code applies testfinder on the sections, methods, design, and the study.
+	As our dictionary of section names grow this step will also grow. 
+	
+	Step 4. Last resort, this function applies the dictionary to the entire document. 
+	There are many false positives.
+	
+	
+	
+Know Issues: 
+			The following pdfs do not convert, most likely a scanning issue: 120.pdf  
+Causey-1970-Congo virus from domestic livestoc.pdf',
+Cornelissen-Kei-2012-Discovery of a novel Torq.pdf.pdf,
+Forrester-2008-Western equine encephalitis sub.pdf,
+'Lee-2004-Isolation of the etiologic agent of K.pdf'
+Leroy et al 2005.pdf,
+Maness-1981-Eastern Equine Encephalitis in the.pdf',
+OIE Kuwait.pdf,
+Price-1978-Serological evidence of infection o.pdf,
+Quaglia-2014-West Nile and st. Louis encephali.pdf',
+Sudia-1975-Epidemic Venezuelan equine encephal.pdf,
+Towner-2009-Isolation of genetically diverse M.pdf,
+Ubico-1995-Serologic survey of neotropical bat.pdf
+Both Wong papers: PCDATA error 12,
+Wood-1978-Crimean-congo hemorrhagic fever, Tho.pdf,
+
+
+
+
+			When document is not a research paper, for example a letter, the function works
+			poorly. 
+
+Results so far:
+				Match					Not Match
+Andriamd paper:    							X
+				Notes: Could not find their test name in the actual paper where mine
+				matched PDF contents. 
+				
+Asnis paper: 								X
+			Notes: Paper is a letter
+			
+Balling paper:	  X
+
+Bosch paper:								X
+			Notes: Letter
+Bouhry Paper: 								X
+			Notes: Only bouhry paper in notes is one that starts with the forrester pdf in
+			the name. Not sure if we are looking at same pdf.
+Breed Paper:	  X
+			Notes: False Positives though
+Buckley Paper:
+				  X
+			Notes: Results correct based off looking at PDF, but I have more returned than
+			theirs.
+			
+Burgueno Paper:   X 					
+			Notes: Messed up formatting, go back and edit function.
+Chaudurani Paper:							X
+			Notes: Getting NA's for document
+			
+Chevalier Paper:  X
+			Notes: Failed to find specific section match, forced to look at entire document
+				Go back to see if different names.
+				
+Cigarro Paper:    X
+			Note: Also got igg by ifa
+Coffey Paper:     X
+			Note: Some False positives.
+
+Corman Paper:	  X
+			Note: Some False Positives.
+
+Cui Paper: 		  X
+
+Fomgaard Paper:								X
+			Note: Captured some but not all of what they wrote.
+			
+Gao Paper:									X
+		Note: Failed to do anything
+		
+Gulati Paper:	  X
+
+Halpin Paper:     X
+		Note: False positives compared to their results
+		
+Hara Paper:		  X
+		Note: False Pos
+
+Hasbe Paper:								X
+		Note: Different answers completely
+		
+Hayes Paper: 								X
+		Note: Partially correct but not a complete word match.
+		
+Heang Paper:								X
+		Note: Lots of NAs
+
+Hjelle Paper:								X
+		Note: Lots of NAs
+			
+Holzmann Paper:   X
+	
+J-infect Paper:								X
+		Note: NAs, Letter. 
+		
+Jones Paper       X
+			Note: They didnt' put any tests, but matches by pdf.
+			
+	
+Kang Paper:									X
+			Note: Returned NA's
+			
+Khaibaillou Paper:X
+			Note: False positives compared to their results
+
+Kim Paper:		  X							
+
+Kinnuen Paper:   							X
+		 Notes: Got serology, but they put unknown and I returned RT-PCR and Complement 
+		 Fixation
+Klein Paper:	  X
+		 Notes: Matched serology as false positive compared to their results.
+Laurenson Paper:							X
+		 Notes: Matched a diagram under methods that had NT as placeholder. The paper was not 
+	structured with test names under methods. 
+	
+Leary Paper:								X INCONCLUSIVE
+		 Notes: I'm getting matches in the methods section and I'm not sure if their file is correct
+because the closest PDF I can find in their list of pdfs is : internal-pdf://2999137579/Wong et al 2007 supplement.pdf;internal-pdf://0148058638/Wong_et_al-2007-Reviews_in_Medical_Virology.pdf;internal-pdf://4202609206/Shi-2008-A review of studies on animal reservo.pdf;;internal-pdf://1347402211/Luis et al_2014_A comparison of bats and roden.pdf`
+Which doesn't highlight Leary until the end.
+
+Levis Paper:
+				  X
+		 Notes: False positives compared to Animal Science Results
+
+Luby Paper:		  X
+
+##Luis Paper's data comes from using a database of bats not actually doing tests?
+
+
+McIntyre Paper:   X
+			Notes: False Positives
+
+Mehla Paper:      X
+			Notes: False Positives
+
+Metzgar Paper:	  X
+			Notes: Had to look through paper to find test matches. They don't have a 
+			record of pdf for Metzgar.
+
+Mutebi Paper:								 X
+			Notes: I think they missed PCR which my function got, but my function missed
+			plaque reduction; which they got. 
+			
+Navarro Paper:    X
+
+Nelson Paper:     X
+			Notes: False Positives
+Nemeth Paper							     X
+			Notes: Na's due to getsectiontext, Only detect one section so only reads that
+			part of paper. Need to put in exception if that happens to read the entire paper
+			with convertpdf2xml. 
+			
+Nerrinet Paper:								 X
+			Notes: Nas see above
+			
+Niedrig Paper:								 X
+			Notes: Nas see above
+
+Nipah Paper:							     X
+			Notes: Only matched Elisa.
+			
+Nolen Paper:	  X
+			Notes: False Positives
+
+Okamato Paper:	  X
+			Notes: False Positives
+			
+Playford Paper:   							 X
+
+Pourrut Paper:    X
+			Notes: False Positives
+			
+Reuskin Paper:   							 X
+			Notes: Wrong neutralization test
+			
+Rollin Paper:     X
+
+Rouquet Paper:    X
+			Notes: Found tests in paper, couldn't find animal science tests for pdf.
+			
+Sames:										 X
+			Notes: Na's
+			
+Shi paper:									 X
+		Notes: dictionary was used on entire paper and couldn't find specific tests they used.
+		
+Svoboda paper:    X
+		Notes: False Positives
+		
+Thoisy Paper:     X
+VanDerPoel Paper: X
+
+Wang Iso Paper: 							  X
+
+Wang Jap Paper:								  X
+		Notes: NAs
+		
+Weaver Paper:	 X			
+		Notes: Animal Science didn't have test names, looking in paper found results.
+
+Wekesa Paper:								  X
+		Notes: didn't find a section to search through. 
+		
+Yashina Paper:								  X
+		Notes: Didn't match a single test.
+
+Yuan Paper:									  X
+		Notes: Partial Match, couldn't find serology. 
