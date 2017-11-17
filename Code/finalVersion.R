@@ -15,6 +15,7 @@ findTests = function(file, dictionary)
   # extract all text grouped by section names.
   wholeText = getSectionText(file)
   
+  # extract all section names the getSectionText return. 
   sectionNames = names(wholeText)
   
   # get tests in section names
@@ -29,6 +30,10 @@ findTests = function(file, dictionary)
   
   if(length(key) != 0)
   { 
+    # If we can find the methods, study, or design in section names
+    # Then we only focus on the text under the section and ignore the rest
+    
+  
     testsInSection = findTestInSection(key, wholeText, sectionNames, dictionary)
     tests = unique(c(testsInSectionName, testsInSection))
     return(tests)
@@ -40,7 +45,7 @@ findTests = function(file, dictionary)
 }
 
 testfinder = function(text,dictionary){
-  #searches text for tests
+  #searches text for tests by using our dictionary files
   
   fixtext1 = paste(dictionary,'\\b',sep ='')
   fixtext2 = paste('(?i)\\b',fixtext1,sep='')
@@ -61,6 +66,7 @@ getKey = function(sectionNames)
   # 2.3.PlaqueReductionNeutralizationTest(PRNT).
   # 2.1 to 2.3 are under section Materials and Methods but shows as new sections
   # we check the pattern digit followd by dot, dot followed by letter
+  # such as 2.MaterialsandMethods
   new_key = key[grepl("^\\d.\\D", sectionNames[key])]
   
   if(length(new_key) != 0)
